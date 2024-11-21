@@ -1,12 +1,19 @@
 name: "PR Agent Review"
 description: "A GitHub Action to review pull requests using OpenAI."
+inputs:
+  openai_api_key:
+    description: "OpenAI API Key"
+    required: true
+  github_token:
+    description: "GitHub Token"
+    required: true
+  pr_number:
+    description: "Pull Request Number"
+    required: true
 runs:
   using: "docker"
   image: "Dockerfile"
   env:
-    OPENAI_API_KEY: ${{ github.event.inputs.openai_api_key }}
-    GITHUB_TOKEN: ${{ github.event.inputs.github_token }}
-    PR_NUMBER: ${{ github.event.inputs.pr_number }}
-    INPUT_OPENAI_API_KEY: ${{ github.event.inputs.input_openai_api_key }}
-    INPUT_GITHUB_TOKEN: ${{ github.event.inputs.input_github_token }}
-    INPUT_PR_NUMBER: ${{ github.event.inputs.input_pr_number }}
+    OPENAI_API_KEY: ${{ inputs.openai_api_key }}
+    GITHUB_TOKEN: ${{ inputs.github_token }}
+    PR_NUMBER: ${{ inputs.pr_number }}
