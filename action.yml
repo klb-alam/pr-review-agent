@@ -1,0 +1,12 @@
+name: "PR Agent Review"
+description: "Analyzes PR changes using OpenAI"
+inputs:
+  openai_api_key:
+    description: "OpenAI API Key"
+    required: true
+  github_token:
+    description: "GitHub Token"
+    required: true
+runs:
+  using: "docker"
+  image: "Dockerfile"
