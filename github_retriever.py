@@ -28,16 +28,17 @@ class GithubRetriever():
         repository_name_or_id: str | int,
         pull_request_number: int,
     ):
-        
-        ## Method To get Repo and PR
+        if isinstance(repository_name_or_id, Repository):
+            repository_name_or_id = repository_name_or_id.full_name  
+
         self._git_repository: GHRepo = client.get_repo(repository_name_or_id)
         self._git_pull_request: GHPullRequest = self._git_repository.get_pull(
             pull_request_number
         )
 
-        # Formatting happen
         self._repository = self._build_repository(self._git_repository)
         self._pull_request = self._build_pull_request(self._git_pull_request)
+
 
     @property
     def repository(self) -> Repository:
