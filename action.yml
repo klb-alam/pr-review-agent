@@ -9,4 +9,4 @@ inputs:
     required: true
 runs:
   using: "docker"
-  image: "Dockerfile"
+  image: "Dockerfile" # Assuming you have a Dockerfile in this repo
