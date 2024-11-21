@@ -10,5 +10,8 @@ RUN pip3 install --no-cache-dir -r requirements.txt
 # Copy the action's code into the container
 COPY . .
 
+# Debugging: List all files in the container
+RUN echo "Contents of /app:" && ls -la /app && echo "Recursive listing of /app:" && ls -R /app
+
 # Set the entry point to the main.py script
 ENTRYPOINT ["python3", "main.py"]
