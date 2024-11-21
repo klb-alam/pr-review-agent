@@ -11,7 +11,7 @@ import prompt_templates.grimoire as grimoire
 async def analyze_pr(retriever: GithubRetriever) -> None:
     # Create a ChatOpenAI model
     model = ChatOpenAI(
-        api_key=os.getenv("OPENAI_API_KEY"),
+        api_key=os.getenv("INPUT_OPENAI_API_KEY"),
         model="gpt-4o-mini"
     )
     
@@ -50,7 +50,7 @@ async def find_or_create_bot_comment(repo, pr_number, bot_username, comment_body
 async def main():
     load_dotenv(override=False)
     print("Environment variables:", dict(os.environ))
-    github_token = os.getenv("GITHUB_TOKEN")
+    github_token = os.getenv("INPUT_GITHUB_TOKEN")
     
     if not github_token:
         raise ValueError("GITHUB_TOKEN not found.")
