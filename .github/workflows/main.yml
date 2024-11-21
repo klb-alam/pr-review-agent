@@ -1,0 +1,18 @@
+name: PR Agent Review
+
+on:
+  pull_request:
+    types: [opened, synchronize] # Trigger on PR open and update
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Run PR Agent Review
+        uses: your_github_username/pr_agent_repo@main # Replace with your username and branch
+        with:
+          openai_api_key: ${{ secrets.OPENAI_API_KEY }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
