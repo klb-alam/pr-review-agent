@@ -14,4 +14,5 @@ COPY . .
 RUN echo "Contents of /app:" && ls -la /app && echo "Recursive listing of /app:" && ls -R /app
 
 # Set the entry point to the main.py script
-ENTRYPOINT ["python3", "main.py"]
+ENTRYPOINT ["python3", "/app/main.py"]
+
