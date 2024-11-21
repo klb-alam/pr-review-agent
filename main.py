@@ -57,7 +57,8 @@ async def main():
     
 
     # dynamic based on pr number input
-    pr_number_str = os.getenv("PR_NUMBER") 
+
+    pr_number_str = os.getenv("INPUT_PR_NUMBER") 
 
     if not pr_number_str:
         raise ValueError("PR_NUMBER environment variable not set.")
