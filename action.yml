@@ -7,9 +7,13 @@ inputs:
   github_token:
     description: "GitHub token"
     required: true
+  pr_number:
+    description: "Pull Request Number"
+    required: false
 runs:
   using: "docker"
   image: "Dockerfile"
   args:
     - ${{ inputs.openai_api_key }}
     - ${{ inputs.github_token }}
+    - ${{ inputs.pr_number }}
