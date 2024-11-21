@@ -9,7 +9,7 @@ inputs:
     required: true
   pr_number:
     description: "Pull Request Number"
-    required: false
+    required: true
 runs:
   using: "docker"
   image: "Dockerfile"
@@ -17,3 +17,6 @@ runs:
     OPENAI_API_KEY: ${{ inputs.openai_api_key }}
     GITHUB_TOKEN: ${{ inputs.github_token }}
     PR_NUMBER: ${{ inputs.pr_number }}
+    INPUT_OPENAI_API_KEY: ${{ inputs.openai_api_key }}
+    INPUT_GITHUB_TOKEN: ${{ inputs.github_token }}
+    INPUT_PR_NUMBER: ${{ inputs.pr_number }}
