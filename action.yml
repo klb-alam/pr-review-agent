@@ -20,3 +20,13 @@ runs:
     INPUT_OPENAI_API_KEY: ${{ inputs.openai_api_key }}
     INPUT_GITHUB_TOKEN: ${{ inputs.github_token }}
     INPUT_PR_NUMBER: ${{ inputs.pr_number }}
+steps:
+  - name: "Log Input Variables"
+    run: |
+      echo "OPENAI_API_KEY: ${{ inputs.openai_api_key }}"
+      echo "GITHUB_TOKEN: ${{ inputs.github_token }}"
+      echo "PR_NUMBER: ${{ inputs.pr_number }}"
+      # Optional: Redact sensitive values if logging publicly
+      echo "OPENAI_API_KEY length: ${#INPUT_OPENAI_API_KEY}"
+      echo "GITHUB_TOKEN length: ${#INPUT_GITHUB_TOKEN}"
+      echo "PR_NUMBER: ${INPUT_PR_NUMBER}"
