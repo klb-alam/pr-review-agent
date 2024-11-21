@@ -1,12 +1,15 @@
 name: "PR Agent Review"
-description: "Analyzes PR changes using OpenAI"
+description: "A GitHub Action to review pull requests using OpenAI."
 inputs:
   openai_api_key:
-    description: "OpenAI API Key"
+    description: "API key for OpenAI"
     required: true
   github_token:
-    description: "GitHub Token"
+    description: "GitHub token"
     required: true
 runs:
   using: "docker"
-  image: "Dockerfile" # Assuming you have a Dockerfile in this repo
+  image: "Dockerfile"
+  args:
+    - ${{ inputs.openai_api_key }}
+    - ${{ inputs.github_token }}
