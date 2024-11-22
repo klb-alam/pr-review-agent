@@ -52,7 +52,7 @@ async def main():
     
     if not github_token:
         raise ValueError("GITHUB_TOKEN not found.")
-    
+    print(github_token)
 
     # dynamic based on pr number input
 
