@@ -11,7 +11,7 @@ import prompt_templates.grimoire as grimoire
 async def analyze_pr(retriever: GithubRetriever):
     # Create a ChatOpenAI model
     model = ChatOpenAI(
-        api_key=os.getenv("OPENAI_API_KEY"),
+        api_key=os.getenv("INPUT_OPENAI_API_KEY"),
         model="gpt-4o-mini"
     )
     
@@ -48,11 +48,11 @@ async def find_or_create_bot_comment(repo, pr_number, bot_username, comment_body
 async def main():
     load_dotenv(override=False)
     print("Environment variables:", dict(os.environ))
-    github_token = os.getenv("GITHUB_TOKEN")
+    github_token = os.getenv("INPUT_GITHUB_TOKEN")
     
     if not github_token:
         raise ValueError("GITHUB_TOKEN not found.")
-    print(github_token)
+        
 
     # dynamic based on pr number input
 
@@ -67,7 +67,7 @@ async def main():
         raise ValueError("Invalid PR_NUMBER format.")
 
     gh = Github(github_token)
-    repo = gh.get_repo("klb-alam/code-challenge") # Replace with your repository name
+    repo = gh.get_repo("klb-alam/code-challenge") 
 
     retriever = GithubRetriever(gh, repo.full_name, pr_number)
 
