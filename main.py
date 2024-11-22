@@ -8,7 +8,7 @@ from langchain.prompts import ChatPromptTemplate
 from langchain.schema.output_parser import StrOutputParser
 import prompt_templates.grimoire as grimoire
 
-async def analyze_pr(retriever: GithubRetriever) -> None:
+async def analyze_pr(retriever: GithubRetriever):
     # Create a ChatOpenAI model
     model = ChatOpenAI(
         api_key=os.getenv("INPUT_OPENAI_API_KEY"),
@@ -28,14 +28,12 @@ async def analyze_pr(retriever: GithubRetriever) -> None:
         "change_files": retriever.pull_request.change_files
     })
     
-    print("\nPull Request Summary:")
-    print(result)
+    return result
 
 async def find_or_create_bot_comment(repo, pr_number, bot_username, comment_body):
     """Finds the bot's previous comment or creates a new one."""
     pr = repo.get_pull(pr_number)
     bot_comment = None
-
     for comment in pr.get_issue_comments():
         if comment.user.login == bot_username:  # Check if the comment is from the bot
             bot_comment = comment
@@ -71,7 +69,7 @@ async def main():
     gh = Github(github_token)
     repo = gh.get_repo("klb-alam/code-challenge") # Replace with your repository name
 
-    retriever = GithubRetriever(gh, repo, pr_number)
+    retriever = GithubRetriever(gh, repo.full_name, pr_number)
 
     result = await analyze_pr(retriever)
 
