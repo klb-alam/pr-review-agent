@@ -1,4 +1,4 @@
-FROM python:3.11
+FROM python:3.11-slim
 
 # Set the working directory inside the container
 WORKDIR /app
@@ -15,4 +15,3 @@ RUN echo "Contents of /app:" && ls -la /app && echo "Recursive listing of /app:"
 
 # Set the entry point to the main.py script
 ENTRYPOINT ["python3", "/app/main.py"]
-
