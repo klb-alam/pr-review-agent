@@ -11,7 +11,7 @@ import prompt_templates.grimoire as grimoire
 async def analyze_pr(retriever: GithubRetriever):
     # Create a ChatOpenAI model
     model = ChatOpenAI(
-        api_key=os.getenv("INPUT_OPENAI_API_KEY"),
+        api_key=os.getenv("OPENAI_API_KEY"),
         model="gpt-4o-mini"
     )
     
