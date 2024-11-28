@@ -11,12 +11,11 @@ from utils.output_struc import Comment
 
 async def analyze_pr(retriever: GithubRetriever):
     llm = ChatOpenAI(
-        api_key=os.getenv("INPUT_OPENAI_API_KEY"), model="gpt-4o-mini", max_retries=2
+        api_key=os.getenv("INPUT_OPENAI_API_KEY") or os.getenv("OPENAI_API_KEY"),
+        model="gpt-4o-mini",
+        max_retries=2,
     )
-    print("INPUT_OPENAI_API_KEY:", os.getenv("INPUT_OPENAI_API_KEY"))
-    print("INPUT_GITHUB_TOKEN:", os.getenv("INPUT_GITHUB_TOKEN"))
-    print("INPUT_PR_NUMBER:", os.getenv("INPUT_PR_NUMBER"))
-    print("GITHUB_ACTOR:", os.getenv("GITHUB_ACTOR"))
+
     structured_llm = llm.with_structured_output(Comment)
 
     prompt_template = ChatPromptTemplate.from_messages(
@@ -80,7 +79,7 @@ def find_or_create_bot_comment(
 
 async def main():
     load_dotenv(override=False)
-    github_token = os.getenv("INPUT_GITHUB_TOKEN")
+    github_token = os.getenv("INPUT_GITHUB_TOKEN") or os.getenv("GITHUB_TOKEN")
 
     if not github_token:
         raise ValueError("GITHUB_TOKEN not found.")
@@ -94,6 +93,10 @@ async def main():
         pr_number = int(pr_number_str)
     except ValueError:
         raise ValueError("Invalid PR_NUMBER format.")
+    print("INPUT_OPENAI_API_KEY:", os.getenv("INPUT_OPENAI_API_KEY"))
+    print("INPUT_GITHUB_TOKEN:", os.getenv("INPUT_GITHUB_TOKEN"))
+    print("INPUT_PR_NUMBER:", os.getenv("INPUT_PR_NUMBER"))
+    print("GITHUB_ACTOR:", os.getenv("GITHUB_ACTOR"))
 
     gh = Github(github_token)
     repo = gh.get_repo("klb-alam/code-challenge")
