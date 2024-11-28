@@ -2,7 +2,7 @@ from github import Github
 import os
 import asyncio
 from dotenv import load_dotenv
-from github_retriever import GithubRetriever
+from github_retriever import GithubRetriever, ChangeFile
 from langchain_openai import ChatOpenAI
 from langchain.prompts import ChatPromptTemplate
 import prompt_templates.grimoire as grimoire
@@ -10,7 +10,6 @@ from utils.output_struc import Comment
 
 
 async def analyze_pr(retriever: GithubRetriever):
-
     llm = ChatOpenAI(
         api_key=os.getenv("INPUT_OPENAI_API_KEY"), model="gpt-4o-mini", max_retries=2
     )
@@ -30,17 +29,36 @@ async def analyze_pr(retriever: GithubRetriever):
     return result
 
 
-def find_or_create_bot_comment(repo, pr_number, bot_username, comment_body):
-    print("heres what you need", comment_body)
+def find_or_create_bot_comment(
+    repo, pr_number, bot_username, comment_body, retriever: GithubRetriever
+):
     changes_description = comment_body.changes_description
     pr_category = comment_body.pr_category
     important_changes = comment_body.important_changes
     objective = comment_body.objective
     pr = repo.get_pull(pr_number)
+
+    # Construct the "Important Changes" section with URLs
+    important_changes_with_urls = []
+    for change in important_changes:
+        # Find the corresponding diff URL
+        diff_url = next(
+            (
+                change_file.diff_url
+                for change_file in retriever.pull_request.change_files
+                if change in change_file.full_name
+            ),
+            None,
+        )
+        if diff_url:
+            important_changes_with_urls.append(f"[{change}]({diff_url})")
+        else:
+            important_changes_with_urls.append(change)
+
     comment_body = (
         f"### Changes Description\n{changes_description}\n\n"
         f"### PR Category\n{pr_category}\n\n"
-        f"### Important Changes\n{', '.join(important_changes)}\n\n"
+        f"### Important Changes\n{', '.join(important_changes_with_urls)}\n\n"
         f"### Objective\n{objective}"
     )
 
@@ -53,7 +71,7 @@ def find_or_create_bot_comment(repo, pr_number, bot_username, comment_body):
     if bot_comment:
         bot_comment.edit(body=comment_body)
     else:
-        pr.create_issue_comment(comment_body)
+        pr.create_issue_comment(body=comment_body)
 
 
 async def main():
@@ -82,7 +100,7 @@ async def main():
 
     bot_username = os.getenv("GITHUB_ACTOR")
 
-    find_or_create_bot_comment(repo, pr_number, bot_username, result)
+    find_or_create_bot_comment(repo, pr_number, bot_username, result, retriever)
 
     gh.close()
 
