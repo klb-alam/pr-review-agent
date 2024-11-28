@@ -7,13 +7,15 @@ from langchain_openai import ChatOpenAI
 from langchain.prompts import ChatPromptTemplate
 from langchain.schema.output_parser import StrOutputParser
 import prompt_templates.grimoire as grimoire
+from utils.output_struc import Comment
 
 
 async def analyze_pr(retriever: GithubRetriever):
-    # Create a ChatOpenAI model
-    model = ChatOpenAI(api_key=os.getenv("INPUT_OPENAI_API_KEY"), model="gpt-4o-mini")
 
-    # Define prompt template using ChatPromptTemplate
+    llm = ChatOpenAI(
+        api_key=os.getenv("INPUT_OPENAI_API_KEY"), model="gpt-4o-mini", max_retries=2
+    )
+    structured_llm = llm.with_structured_output(Comment)
 
     prompt_template = ChatPromptTemplate.from_messages(
         [
@@ -22,7 +24,7 @@ async def analyze_pr(retriever: GithubRetriever):
         ]
     )
 
-    chain = prompt_template | model | StrOutputParser()
+    chain = prompt_template | structured_llm | StrOutputParser()
 
     result = await chain.ainvoke({"change_files": retriever.pull_request.change_files})
 
