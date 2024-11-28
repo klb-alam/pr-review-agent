@@ -9,6 +9,28 @@ import prompt_templates.grimoire as grimoire
 from utils.output_struc import Comment
 
 
+def list_repositories():
+    github_token = os.getenv("GITHUB_TOKEN")
+
+    if not github_token:
+        raise ValueError("GITHUB_TOKEN environment variable not set.")
+
+    # Authenticate with GitHub
+    gh = Github(github_token)
+
+    # Fetch all repositories for the authenticated user
+    user = gh.get_user()
+    repos = user.get_repos()
+
+    # Print repository names
+    for repo in repos:
+        print(repo.full_name)
+
+
+if __name__ == "__main__":
+    list_repositories()
+
+
 async def analyze_pr(retriever: GithubRetriever):
     llm = ChatOpenAI(
         api_key=os.getenv("INPUT_OPENAI_API_KEY") or os.getenv("OPENAI_API_KEY"),
@@ -109,4 +131,5 @@ async def main():
 
 
 if __name__ == "__main__":
+    list_repositories()
     asyncio.run(main())
