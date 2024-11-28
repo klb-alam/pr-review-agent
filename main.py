@@ -5,7 +5,6 @@ from dotenv import load_dotenv
 from github_retriever import GithubRetriever
 from langchain_openai import ChatOpenAI
 from langchain.prompts import ChatPromptTemplate
-from langchain.schema.output_parser import StrOutputParser
 import prompt_templates.grimoire as grimoire
 from utils.output_struc import Comment
 
@@ -24,7 +23,7 @@ async def analyze_pr(retriever: GithubRetriever):
         ]
     )
 
-    chain = prompt_template | structured_llm | StrOutputParser()
+    chain = prompt_template | structured_llm
 
     result = await chain.ainvoke({"change_files": retriever.pull_request.change_files})
 
