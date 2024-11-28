@@ -1,4 +1,4 @@
-FROM python:3.11-slim
+FROM python:3.11-alphine
 
 # Set the working directory inside the container
 WORKDIR /app
@@ -7,7 +7,7 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip3 install --no-cache-dir -r requirements.txt
 
-# Copy the action's code into the container
+
 COPY . .
 
 # Debugging: List all files in the container
