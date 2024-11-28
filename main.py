@@ -13,6 +13,10 @@ async def analyze_pr(retriever: GithubRetriever):
     llm = ChatOpenAI(
         api_key=os.getenv("INPUT_OPENAI_API_KEY"), model="gpt-4o-mini", max_retries=2
     )
+    print("INPUT_OPENAI_API_KEY:", os.getenv("INPUT_OPENAI_API_KEY"))
+    print("INPUT_GITHUB_TOKEN:", os.getenv("INPUT_GITHUB_TOKEN"))
+    print("INPUT_PR_NUMBER:", os.getenv("INPUT_PR_NUMBER"))
+    print("GITHUB_ACTOR:", os.getenv("GITHUB_ACTOR"))
     structured_llm = llm.with_structured_output(Comment)
 
     prompt_template = ChatPromptTemplate.from_messages(
