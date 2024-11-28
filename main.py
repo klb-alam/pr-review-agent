@@ -58,7 +58,6 @@ def find_or_create_bot_comment(repo, pr_number, bot_username, comment_body):
 
 async def main():
     load_dotenv(override=False)
-    print("Environment variables:", dict(os.environ))
     github_token = os.getenv("INPUT_GITHUB_TOKEN")
 
     if not github_token:
