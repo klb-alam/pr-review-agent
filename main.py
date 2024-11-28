@@ -31,9 +31,18 @@ async def analyze_pr(retriever: GithubRetriever):
 
 
 def find_or_create_bot_comment(repo, pr_number, bot_username, comment_body):
-    """Finds the bot's previous comment or creates a new one."""
+    print("heres what you need", comment_body)
+    changes_description = comment_body.changes_description
+    pr_category = comment_body.pr_category
+    important_changes = comment_body.important_changes
+    objective = comment_body.objective
     pr = repo.get_pull(pr_number)
-    print(dir(pr))
+    comment_body = (
+        f"### Changes Description\n{changes_description}\n\n"
+        f"### PR Category\n{pr_category}\n\n"
+        f"### Important Changes\n{', '.join(important_changes)}\n\n"
+        f"### Objective\n{objective}"
+    )
 
     bot_comment = None
     for comment in pr.get_issue_comments():
