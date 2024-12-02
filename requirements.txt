@@ -4,7 +4,7 @@ langchain-community==0.3.7
 langchain-core==0.3.19
 langchain-openai==0.2.9
 langsmith==0.1.143
-openai==1.54.5
+openai==1.55.3
 py==1.11.0
 pycparser==2.22
 pydantic==2.9.2
