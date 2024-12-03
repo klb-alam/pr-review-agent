@@ -19,3 +19,11 @@ class Comment(BaseModel):
         description="A list of important files containing major logical changes, applicable for Feature/Refactor PRs.",
     )
     objective: str = Field(description="The objective of the PR.")
+    bugs: Optional[str] = Field(
+        default=None,
+        description="Potential bugs or issues that the reviewer should pay attention to.",
+    )
+    errors: Optional[str] = Field(
+        default=None,
+        description="Discovered errors that will cause code to fail",
+    )
