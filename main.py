@@ -117,7 +117,9 @@ async def main():
         raise ValueError("Invalid PR_NUMBER format.")
 
     gh = Github(github_token)
-    repo = gh.get_repo("kasagi-labo/fep-services")
+    repo = gh.get_repo(
+        f"kasagi-labo/" + os.getenv("INPUT_REPO_NAME") or os.getenv("REPO_NAME")
+    )
 
     retriever = GithubRetriever(gh, repo.full_name, pr_number)
 
